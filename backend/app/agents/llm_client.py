@@ -3,15 +3,15 @@ import json
 from typing import Any, TypeVar, Type
 from openai import AsyncOpenAI
 from app.schemas.schemas import ParsedIntent, PlanGeneratorResponse, PlanReviserResponse, NudgeComposerResponse
+from app.core.config import get_settings
 
 T = TypeVar('T')
 
-# Use the provided NVIDIA API key
-api_key = "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"
+settings = get_settings()
 
 client = AsyncOpenAI(
-    base_url="https://integrate.api.nvidia.com/v1",
-    api_key=api_key
+    base_url=settings.LLM_BASE_URL,
+    api_key=settings.LLM_API_KEY or "dummy-key"
 )
 
 async def call_gemini(
@@ -26,7 +26,7 @@ async def call_gemini(
         system_instruction += "\nYou MUST respond in valid JSON format matching the requested schema. Do not include any other text."
         
         completion = await client.chat.completions.create(
-            model="meta/llama-3.1-8b-instruct",
+            model=settings.LLM_MODEL,
             messages=[
                 {"role": "system", "content": system_instruction},
                 {"role": "user", "content": user_message}

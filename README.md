@@ -62,7 +62,7 @@ The project is structured as a decoupled monorepo containing a Python backend an
 ### Prerequisites
 - Node.js (v18+)
 - Python (3.10+)
-- An **NVIDIA API Key** (to access NIM endpoints)
+- An **OpenAI-compatible API Key** (OpenAI, Anthropic via proxy, NVIDIA NIM, Groq, local models, etc.)
 
 ### Backend Setup
 
@@ -80,9 +80,11 @@ The project is structured as a decoupled monorepo containing a Python backend an
    pip install -e .
    ```
 4. Configure Environment Variables:
-   Copy `.env.example` to `.env` and insert your NVIDIA API key:
+   Copy `.env.example` to `.env` and insert your API key and base URL:
    ```env
-   NVIDIA_API_KEY=nvapi-your-key-here
+   LLM_API_KEY=your-api-key-here
+   LLM_BASE_URL=https://api.openai.com/v1
+   LLM_MODEL=gpt-4o-mini
    ```
 5. Initialize the database and run the server:
    ```bash

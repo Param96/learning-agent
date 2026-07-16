@@ -8,8 +8,9 @@ class Settings(BaseSettings):
     
     DATABASE_URL: str = "sqlite:///./learning_agent.db"
     
-    ANTHROPIC_API_KEY: str = ""
-    ANTHROPIC_MODEL: str = "claude-3-sonnet-20240229"
+    LLM_API_KEY: str = ""
+    LLM_BASE_URL: str = "https://api.openai.com/v1"
+    LLM_MODEL: str = "gpt-4o-mini"
     
     JWT_SECRET_KEY: str = "dev-secret-key-change-in-production"
     JWT_ALGORITHM: str = "HS256"
