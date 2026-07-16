@@ -253,15 +253,28 @@ async def get_dashboard_stats(plan_id: Optional[int] = None, db: Session = Depen
         Milestone.status == MilestoneStatus.ACTIVE
     ).count()
     
-    # Streak calculation (simplified)
-    last_activity = db.query(ActivityLog).filter(
+    # Streak calculation
+    from datetime import timedelta
+    dates_query = db.query(func.date(ActivityLog.timestamp)).filter(
         ActivityLog.user_id == user_id
-    ).order_by(ActivityLog.timestamp.desc()).first()
+    ).distinct().order_by(func.date(ActivityLog.timestamp).desc()).all()
+    
+    dates = [datetime.strptime(d[0], '%Y-%m-%d').date() for d in dates_query if d[0]]
     
     current_streak = 0
-    if last_activity:
-        days_since = (datetime.now() - last_activity.timestamp).days
-        current_streak = max(0, 3 - days_since)  # Simplified
+    today = datetime.now().date()
+    
+    if dates:
+        # If the most recent activity was today or yesterday, we have an active streak
+        if dates[0] == today or dates[0] == today - timedelta(days=1):
+            current_streak = 1
+            current_date = dates[0]
+            for d in dates[1:]:
+                if d == current_date - timedelta(days=1):
+                    current_streak += 1
+                    current_date = d
+                else:
+                    break
     
     return DashboardStats(
         completion_percent=completion_percent,
