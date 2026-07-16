@@ -20,6 +20,7 @@ async def create_goal(goal_create: GoalCreate, db: Session = Depends(get_db)):
     try:
         parsed_intent = await parse_intent(goal_create.raw_input)
     except Exception as e:
+        print(f"ERROR: LLM parsing failed: {str(e)}")
         # Fall back to basic parsing if LLM fails
         parsed_intent = None
     

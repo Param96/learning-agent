@@ -33,8 +33,7 @@ async def call_gemini(
             ],
             temperature=temperature,
             top_p=1,
-            max_tokens=2048,
-            response_format={"type": "json_object"}
+            max_tokens=2048
         )
         
         content = completion.choices[0].message.content
