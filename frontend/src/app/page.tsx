@@ -53,7 +53,7 @@ export default function Home() {
     const constructedInput = `I want to learn ${formData.topic}. My ultimate goal is: ${formData.outcome}. My current experience level is ${formData.level}. I want to complete this in ${formData.timeline_weeks} weeks, and I can dedicate ${formData.hours_per_week} hours per week.`;
 
     try {
-      const response = await axios.post('http://localhost:8000/goals/', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/goals/`, {
         raw_input: constructedInput
       });
       setGoal(response.data);
@@ -79,7 +79,7 @@ export default function Home() {
     
     setLoading(true);
     try {
-      await axios.post('http://localhost:8000/plans/', {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/plans/`, {
         goal_id: goal.id
       });
       window.location.href = '/dashboard';

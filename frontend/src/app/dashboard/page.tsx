@@ -96,7 +96,7 @@ export default function Dashboard() {
 
   const fetchCourses = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/plans/overview');
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/plans/overview`);
       setCourses(res.data);
       if (res.data.length > 0) {
         setSelectedPlanId(res.data[0].plan_id);
@@ -114,10 +114,10 @@ export default function Dashboard() {
     try {
       const query = `?plan_id=${planId}`;
       const [statsRes, milestonesRes, nudgesRes, revisionsRes] = await Promise.all([
-        axios.get(`http://localhost:8000/plans/active/dashboard${query}`).catch(() => ({ data: null })),
-        axios.get(`http://localhost:8000/plans/active/milestones${query}`).catch(() => ({ data: [] })),
-        axios.get(`http://localhost:8000/activity/nudges`).catch(() => ({ data: [] })), // Nudges could be global or plan-specific
-        axios.get(`http://localhost:8000/plans/active/revisions${query}`).catch(() => ({ data: [] }))
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/plans/active/dashboard${query}`).catch(() => ({ data: null })),
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/plans/active/milestones${query}`).catch(() => ({ data: [] })),
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/activity/nudges`).catch(() => ({ data: [] })), // Nudges could be global or plan-specific
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/plans/active/revisions${query}`).catch(() => ({ data: [] }))
       ]);
       setStats(statsRes.data);
       setMilestones(milestonesRes.data);
@@ -132,7 +132,7 @@ export default function Dashboard() {
 
   const handleMarkComplete = async (taskId: number) => {
     try {
-      await axios.put(`http://localhost:8000/tasks/${taskId}/complete`);
+      await axios.put(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/tasks/${taskId}/complete`);
       if (selectedPlanId) {
         fetchDashboardData(selectedPlanId);
       }
@@ -146,7 +146,7 @@ export default function Dashboard() {
     if (!confirm('Are you sure you want to delete this course?')) return;
     
     try {
-      await axios.delete(`http://localhost:8000/plans/${planId}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/plans/${planId}`);
       if (selectedPlanId === planId) {
         setSelectedPlanId(null);
         setStats(null);
@@ -160,7 +160,7 @@ export default function Dashboard() {
 
   const dismissNudge = async (nudgeId: number) => {
     try {
-      await axios.post(`http://localhost:8000/activity/nudges/${nudgeId}/dismiss`);
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/activity/nudges/${nudgeId}/dismiss`);
       setNudges(nudges.filter(n => n.id !== nudgeId));
     } catch (error) {
       console.error('Error dismissing nudge:', error);
@@ -169,7 +169,7 @@ export default function Dashboard() {
 
   const handleTaskAction = async (taskId: number, action: 'complete' | 'skip') => {
     try {
-      await axios.post('http://localhost:8000/activity/log', {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/activity/log`, {
         task_id: taskId,
         event_type: action === 'complete' ? 'completed' : 'skipped',
         time_spent_min: action === 'complete' ? 30 : 0

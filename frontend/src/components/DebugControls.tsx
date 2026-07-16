@@ -5,7 +5,7 @@ import axios from 'axios';
 export default function DebugControls() {
   const simulateInactivity = async () => {
     try {
-      await axios.post('http://localhost:8000/activity/check-triggers');
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/activity/check-triggers`);
       window.location.reload();
     } catch (error) {
       console.error('Error simulating inactivity:', error);
@@ -14,7 +14,7 @@ export default function DebugControls() {
 
   const simulateLowScore = async () => {
     try {
-      await axios.post('http://localhost:8000/activity/attempts', {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/activity/attempts`, {
         task_id: 1,
         attempt_type: 'quiz',
         score: 45,
@@ -28,7 +28,7 @@ export default function DebugControls() {
 
   const simulateEarlyCompletion = async () => {
     try {
-      await axios.post('http://localhost:8000/activity/log', {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/activity/log`, {
         task_id: 1,
         event_type: 'completed',
         time_spent_min: 15
@@ -42,7 +42,7 @@ export default function DebugControls() {
   const simulateScheduleSlip = async () => {
     try {
       // Mark a milestone as overdue by updating its date
-      await axios.patch('http://localhost:8000/activity/simulate-slip');
+      await axios.patch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/activity/simulate-slip`);
       window.location.reload();
     } catch (error) {
       console.error('Error simulating schedule slip:', error);
