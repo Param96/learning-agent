@@ -2,11 +2,14 @@ from pydantic_settings import BaseSettings
 from functools import lru_cache
 
 
+import os
+
 class Settings(BaseSettings):
     APP_NAME: str = "Learning Agent"
     DEBUG: bool = False
     
-    DATABASE_URL: str = "sqlite:///./learning_agent.db"
+    # Use /tmp for SQLite on Vercel since the rest of the filesystem is read-only
+    DATABASE_URL: str = "sqlite:////tmp/learning_agent.db" if os.environ.get("VERCEL") else "sqlite:///./learning_agent.db"
     
     LLM_API_KEY: str = ""
     LLM_BASE_URL: str = "https://api.openai.com/v1"
