@@ -9,10 +9,13 @@ T = TypeVar('T')
 
 settings = get_settings()
 
-# Ensure base_url doesn't have a trailing slash which causes 404s with NVIDIA API
+# Ensure base_url doesn't have a trailing slash or path which causes 404s with NVIDIA API
 base_url = settings.LLM_BASE_URL
-if base_url and base_url.endswith("/"):
-    base_url = base_url[:-1]
+if base_url:
+    if base_url.endswith("/chat/completions"):
+        base_url = base_url[:-17]
+    if base_url.endswith("/"):
+        base_url = base_url[:-1]
 
 client = AsyncOpenAI(
     base_url=base_url,
