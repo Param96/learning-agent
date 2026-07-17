@@ -11,13 +11,7 @@ engine = create_engine(
     connect_args={"check_same_thread": False, "timeout": 30} if "sqlite" in settings.DATABASE_URL else {}
 )
 
-if "sqlite" in settings.DATABASE_URL:
-    @event.listens_for(engine, "connect")
-    def set_sqlite_pragma(dbapi_connection, connection_record):
-        cursor = dbapi_connection.cursor()
-        cursor.execute("PRAGMA journal_mode=WAL")
-        cursor.execute("PRAGMA synchronous=NORMAL")
-        cursor.close()
+# WAL mode is removed because it causes hangs/deadlocks on Vercel Serverless (due to mmap issues)
 
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

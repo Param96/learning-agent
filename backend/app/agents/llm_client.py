@@ -22,7 +22,8 @@ if base_url:
 
 client = AsyncOpenAI(
     base_url=base_url,
-    api_key=settings.LLM_API_KEY or "dummy-key"
+    api_key=settings.LLM_API_KEY or "dummy-key",
+    timeout=60.0
 )
 
 async def call_gemini(
