@@ -37,16 +37,29 @@ async def call_gemini(
         # Append JSON instruction to ensure the model returns JSON
         system_instruction += "\nYou MUST respond in valid JSON format matching the requested schema. Do not include any other text."
         
-        completion = await client.chat.completions.create(
-            model=settings.LLM_MODEL,
-            messages=[
-                {"role": "system", "content": system_instruction},
-                {"role": "user", "content": user_message}
-            ],
-            temperature=temperature,
-            top_p=1,
-            max_tokens=2048
-        )
+        try:
+            completion = await client.chat.completions.create(
+                model=settings.LLM_MODEL,
+                messages=[
+                    {"role": "system", "content": system_instruction},
+                    {"role": "user", "content": user_message}
+                ],
+                temperature=temperature,
+                top_p=1,
+                max_tokens=2048
+            )
+        except Exception as primary_err:
+            print(f"Primary model ({settings.LLM_MODEL}) failed: {primary_err}. Trying fallback model...")
+            completion = await client.chat.completions.create(
+                model="meta/llama-3.1-8b-instruct",
+                messages=[
+                    {"role": "system", "content": system_instruction},
+                    {"role": "user", "content": user_message}
+                ],
+                temperature=temperature,
+                top_p=1,
+                max_tokens=2048
+            )
         
         content = completion.choices[0].message.content
         
