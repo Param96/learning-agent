@@ -6,7 +6,9 @@ from app.schemas.schemas import PlanReviserResponse
 settings = get_settings()
 
 
-async def revise_plan(current_plan: dict, trigger_reason: str, trigger_data: dict) -> PlanReviserResponse:
+async def revise_plan(
+    current_plan: dict, trigger_reason: str, trigger_data: dict
+) -> PlanReviserResponse:
     """Revise plan based on trigger (quiz failure, schedule slip, etc.)."""
     # Mock response for MVP
     return PlanReviserResponse(
@@ -20,8 +22,8 @@ async def revise_plan(current_plan: dict, trigger_reason: str, trigger_data: dic
                 "entity_data": {
                     "title": "Remedial Review Session",
                     "task_type": "reading",
-                    "est_minutes": 45
-                }
+                    "est_minutes": 45,
+                },
             }
-        ]
+        ],
     )

@@ -2,6 +2,7 @@ from typing import Dict, Any
 from app.schemas.schemas import PlanGeneratorResponse
 from app.agents.llm_client import call_gemini
 
+
 async def generate_plan(parsed_intent: Dict[str, Any]) -> PlanGeneratorResponse:
     """Generate a learning plan from parsed intent using NVIDIA API."""
     system_instruction = (
@@ -12,16 +13,16 @@ async def generate_plan(parsed_intent: Dict[str, Any]) -> PlanGeneratorResponse:
         "Ensure the timeline matches the user's requested timeline_weeks if possible. "
         "You must return ONLY a JSON object that matches exactly this structure:\n"
         "{\n"
-        "  \"milestones\": [\n"
+        '  "milestones": [\n'
         "    {\n"
-        "      \"title\": \"string\",\n"
-        "      \"target_week\": 1,\n"
-        "      \"tasks\": [\n"
+        '      "title": "string",\n'
+        '      "target_week": 1,\n'
+        '      "tasks": [\n'
         "        {\n"
-        "          \"title\": \"string\",\n"
-        "          \"task_type\": \"video\",\n"
-        "          \"est_minutes\": 60,\n"
-        "          \"description\": \"string (detailed description of what the task involves)\"\n"
+        '          "title": "string",\n'
+        '          "task_type": "video",\n'
+        '          "est_minutes": 60,\n'
+        '          "description": "string (detailed description of what the task involves)"\n'
         "        }\n"
         "      ]\n"
         "    }\n"
@@ -29,12 +30,14 @@ async def generate_plan(parsed_intent: Dict[str, Any]) -> PlanGeneratorResponse:
         "}\n"
         "Do NOT return the schema itself. Return the populated data."
     )
-    
-    user_message = f"Please generate a learning plan for the following intent:\n{parsed_intent}"
-    
+
+    user_message = (
+        f"Please generate a learning plan for the following intent:\n{parsed_intent}"
+    )
+
     return await call_gemini(
         system_instruction=system_instruction,
         user_message=user_message,
         response_schema=PlanGeneratorResponse,
-        temperature=0.3
+        temperature=0.3,
     )

@@ -2,7 +2,7 @@ import sys
 import os
 
 # Ensure the 'backend' directory is in the Python path so 'app.*' imports work from the root directory (e.g. on Vercel)
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,7 +19,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Learning Agent API",
     description="AI-Powered Personal Learning Agent Backend",
-    version="0.1.0"
+    version="0.1.0",
 )
 
 settings = get_settings()
@@ -27,7 +27,7 @@ settings = get_settings()
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Allow all origins for Vercel deployment
+    allow_origins=["*"],  # Allow all origins for Vercel deployment
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,11 +36,7 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {
-        "app": "Learning Agent API",
-        "version": "0.1.0",
-        "status": "running"
-    }
+    return {"app": "Learning Agent API", "version": "0.1.0", "status": "running"}
 
 
 @app.get("/health")
@@ -58,4 +54,5 @@ app.include_router(simulate.router)
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)

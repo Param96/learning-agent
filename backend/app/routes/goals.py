@@ -4,9 +4,7 @@ from typing import List
 import json
 
 from app.core.database import get_db
-from app.schemas.schemas import (
-    GoalCreate, GoalResponse, GoalWithIntent, ParsedIntent
-)
+from app.schemas.schemas import GoalCreate, GoalResponse, GoalWithIntent, ParsedIntent
 from app.models.models import Goal, GoalStatus, User
 from app.agents.intent_parser import parse_intent
 
@@ -22,7 +20,7 @@ async def create_goal(goal_create: GoalCreate, db: Session = Depends(get_db)):
     except Exception as e:
         print(f"ERROR: LLM parsing failed: {str(e)}")
         raise HTTPException(status_code=400, detail=f"LLM Error: {str(e)}")
-    
+
     # Create goal record
     goal = Goal(
         user_id=1,  # TODO: Get from auth
@@ -30,13 +28,13 @@ async def create_goal(goal_create: GoalCreate, db: Session = Depends(get_db)):
         domain=parsed_intent.domain if parsed_intent else None,
         current_level=parsed_intent.current_skill_level if parsed_intent else None,
         target_outcome=parsed_intent.target_outcome if parsed_intent else None,
-        status=GoalStatus.DRAFT
+        status=GoalStatus.DRAFT,
     )
-    
+
     db.add(goal)
     db.commit()
     db.refresh(goal)
-    
+
     return goal
 
 
@@ -50,9 +48,11 @@ async def list_goals(db: Session = Depends(get_db)):
 @router.get("/{goal_id}", response_model=GoalWithIntent)
 async def get_goal(goal_id: int, db: Session = Depends(get_db)):
     """Get a specific goal with its parsed intent."""
-    goal = db.query(Goal).filter(Goal.id == goal_id, Goal.user_id == 1).first()  # TODO: Get from auth
-    
+    goal = (
+        db.query(Goal).filter(Goal.id == goal_id, Goal.user_id == 1).first()
+    )  # TODO: Get from auth
+
     if not goal:
         raise HTTPException(status_code=404, detail="Goal not found")
-    
+
     return goal

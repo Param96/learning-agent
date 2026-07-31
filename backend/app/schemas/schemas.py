@@ -60,10 +60,18 @@ class NudgeTriggerType(str, Enum):
 # Intent Parser schemas
 class ParsedIntent(BaseModel):
     domain: str = Field(..., description="The learning domain requested by the user")
-    current_skill_level: str = Field(..., description="Current skill level derived from the prompt")
-    target_outcome: str = Field(..., description="Specific target outcome or certification requested")
-    timeline_weeks: int = Field(..., ge=1, le=52, description="Target timeline in weeks")
-    constraints: List[str] = Field(default_factory=list, description="Any constraints mentioned by the user")
+    current_skill_level: str = Field(
+        ..., description="Current skill level derived from the prompt"
+    )
+    target_outcome: str = Field(
+        ..., description="Specific target outcome or certification requested"
+    )
+    timeline_weeks: int = Field(
+        ..., ge=1, le=52, description="Target timeline in weeks"
+    )
+    constraints: List[str] = Field(
+        default_factory=list, description="Any constraints mentioned by the user"
+    )
 
 
 class IntentParserResponse(BaseModel):
@@ -90,10 +98,16 @@ class PlanGeneratorResponse(BaseModel):
 
 # Plan Reviser schemas
 class DiffChange(BaseModel):
-    change_type: str = Field(..., description="Type of change: 'add', 'remove', 'modify', 'delay'")
+    change_type: str = Field(
+        ..., description="Type of change: 'add', 'remove', 'modify', 'delay'"
+    )
     entity_type: str = Field(..., description="Entity type: 'milestone' or 'task'")
-    entity_id: Optional[int] = Field(None, description="ID of existing entity (for modify/remove/delay)")
-    entity_data: Optional[dict] = Field(None, description="New/updated entity data (for add/modify)")
+    entity_id: Optional[int] = Field(
+        None, description="ID of existing entity (for modify/remove/delay)"
+    )
+    entity_data: Optional[dict] = Field(
+        None, description="New/updated entity data (for add/modify)"
+    )
     reason: str = Field(..., description="Why this change is being made")
 
 
@@ -150,7 +164,7 @@ class PlanResponse(BaseModel):
     status: PlanStatus
     plan_data: dict
 
-    @field_validator('plan_data', mode='before')
+    @field_validator("plan_data", mode="before")
     @classmethod
     def parse_plan_data(cls, v: Any) -> dict:
         if isinstance(v, str):
