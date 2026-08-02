@@ -1,6 +1,5 @@
 import asyncio
 from openai import AsyncOpenAI
-import os
 
 
 async def main():

@@ -11,7 +11,6 @@ from app.schemas.schemas import (
     PlanResponse,
     PlanStatus,
     MilestoneResponse,
-    TaskResponse,
     TaskStatus,
     MilestoneStatus,
     DashboardStats,
@@ -22,9 +21,7 @@ from app.models.models import (
     Goal,
     Milestone,
     Task,
-    User,
     ActivityLog,
-    Nudge,
     PlanRevision,
     GoalStatus,
 )
@@ -213,7 +210,6 @@ async def get_active_plan_revisions(
     if not active_plan:
         return []
 
-    from app.schemas.schemas import PlanRevisionResponse
 
     revisions = (
         db.query(PlanRevision)

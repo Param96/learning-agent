@@ -4,12 +4,11 @@ import os
 # Ensure the 'backend' directory is in the Python path so 'app.*' imports work from the root directory (e.g. on Vercel)
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
 from datetime import datetime
 
-from app.core.database import engine, get_db, Base
+from app.core.database import engine, Base
 from app.routes import goals, plans, activity, plan_revisions, simulate
 from app.core.config import get_settings
 

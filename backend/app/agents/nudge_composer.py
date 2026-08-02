@@ -1,5 +1,3 @@
-import json
-from typing import Any, Optional
 from app.core.config import get_settings
 from app.schemas.schemas import NudgeComposerResponse
 

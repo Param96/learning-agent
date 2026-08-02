@@ -7,7 +7,6 @@ import json
 from datetime import datetime, timedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.core.database import Base
 from app.models.models import (
     User,
     Goal,
@@ -17,12 +16,10 @@ from app.models.models import (
     Attempt,
     ActivityLog,
     Nudge,
-    PlanRevision,
     GoalStatus,
     PlanStatus,
     MilestoneStatus,
     TaskStatus,
-    TaskType,
     ActivityEventType,
     AttemptType,
     NudgeTriggerType,

@@ -4,7 +4,6 @@ from .config import get_settings
 
 settings = get_settings()
 
-from sqlalchemy import event
 
 engine = create_engine(
     settings.DATABASE_URL,

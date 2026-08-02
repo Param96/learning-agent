@@ -1,19 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import func
-from datetime import datetime, timedelta
 import json
 
 from app.core.database import get_db
-from app.schemas.schemas import PlanRevisionResponse, PlanResponse
+from app.schemas.schemas import PlanRevisionResponse
 from app.models.models import (
     Plan,
     PlanRevision,
-    Milestone,
-    Task,
     PlanStatus,
-    MilestoneStatus,
-    TaskStatus,
 )
 from app.agents.plan_reviser import revise_plan
 

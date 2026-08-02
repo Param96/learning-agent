@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from sqlalchemy import func
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List
 
 from app.core.database import get_db
@@ -20,10 +19,8 @@ from app.models.models import (
     Milestone,
     MilestoneStatus,
     Attempt,
-    AttemptType,
     Nudge,
     NudgeTriggerType,
-    User,
 )
 from app.agents.nudge_composer import compose_nudge
 from app.core.config import get_settings

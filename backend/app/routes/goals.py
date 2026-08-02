@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-import json
 
 from app.core.database import get_db
-from app.schemas.schemas import GoalCreate, GoalResponse, GoalWithIntent, ParsedIntent
-from app.models.models import Goal, GoalStatus, User
+from app.schemas.schemas import GoalCreate, GoalResponse, GoalWithIntent
+from app.models.models import Goal, GoalStatus
 from app.agents.intent_parser import parse_intent
 
 router = APIRouter(prefix="/goals", tags=["goals"])

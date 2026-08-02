@@ -1,6 +1,4 @@
-import os
-import json
-from typing import Any, TypeVar, Type
+from typing import TypeVar, Type
 from openai import AsyncOpenAI
 from app.schemas.schemas import (
     ParsedIntent,

@@ -1,5 +1,4 @@
 import sqlite3
-import time
 
 print("Connecting...")
 conn = sqlite3.connect("/tmp/readonly_test/test.db", timeout=2.0)
