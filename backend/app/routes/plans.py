@@ -210,7 +210,6 @@ async def get_active_plan_revisions(
     if not active_plan:
         return []
 
-
     revisions = (
         db.query(PlanRevision)
         .filter(PlanRevision.plan_id == active_plan.id)
